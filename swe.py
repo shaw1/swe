@@ -213,7 +213,7 @@ class swe(object):
         
         return np.hstack((m0b, n0b, phi0b))
 
-    def animate(self):
+    def animate(self, ndt=500):
         """Display animation of model variables.
 
         The initial state for the animation is the same that Griffith
@@ -232,7 +232,7 @@ class swe(object):
         plt.legend(loc="upper left", numpoints=1)
         plt.pause(0.0001)
 
-        for k in xrange(1, 500 + 1):
+        for k in xrange(1, ndt + 1):
             [m, n, phi] = fortran.ftcs(m, n, phi, self.H, self.f, \
                                    self.g, self.dx, self.dt, self.K)
         
