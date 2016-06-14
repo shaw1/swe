@@ -6,7 +6,7 @@
 !   with respect to varying inputs: m0 phi0 n0
 !   RW status of diff variables: m:out n:out m0:in phi0:in n0:in
 !                phi:out
-SUBROUTINE FTCS_TLM(m0, m0d, n0, n0d, phi0, phi0d, md, nd, phid&
+SUBROUTINE FTCS_TOPOG_TLM(m0, m0d, n0, n0d, phi0, phi0d, md, nd, phid&
 & , h, f, g, dx, dt, k, length)
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: length
@@ -91,4 +91,4 @@ SUBROUTINE FTCS_TLM(m0, m0d, n0, n0d, phi0, phi0d, md, nd, phid&
 
   phid(length) = phi0d(length) - coeff2*(m0d(1)-m0d(length-1)) + coeff3*&
 &   (phi0d(length-1)-2.d0*phi0d(length)+phi0d(1))
-END SUBROUTINE FTCS_TLM
+END SUBROUTINE FTCS_TOPOG_TLM

@@ -16,15 +16,15 @@ References:
 Author:             Jeremy Shaw
 Institution:        Portland State University
 Date Created:       23 March 2016
-Last Modified Date: 28 March 2016
+Last Modified Date: 11 June 2016
 """
 import numpy as np
 import math
 import matplotlib.pyplot as plt
 
-import swe_fortran as fortran
+import swe_topog_fortran as topog
 
-class swe(object):
+class swe_topog(object):
     """Two-dimensional shallow water equations solved by FTCS.
 
     Consider the shallow water equations with rotation and bottom
@@ -57,10 +57,6 @@ class swe(object):
 
         lat: Latitude in degrees.
 
-        topo: String to determine whether the bottom topography will
-              contain a ridge or be flat. The choices are "ridge" and
-              "zero".
-
         f: Coriolis parameter for rotation (1 / s), computed from the
            latitude input.
 
@@ -89,13 +85,11 @@ class swe(object):
 
         _topography: Bottom topography with a ridge [1].
     """
-    def __init__(self, g=9.8, J=100, K=500.0, lat=30.0, topo="zero"):
+    def __init__(self, g=9.8, J=100, K=500.0, lat=30.0):
         """Initializes model parameters.
 
         Griffith and Nichols [1] use the value of L corresponding to
-        a latitude of 60 degrees and not 30 degrees. The possible
-        values for topo are "zero", which means flat bottom
-        topography, and "ridge", which uses _topography.
+        a latitude of 60 degrees and not 30 degrees.
         """
         self.g = g
         self.J = J
@@ -109,16 +103,11 @@ class swe(object):
         self.dx = self.L / float(J)
         self.dt = 0.1 * self.dx
 
-        if topo == "zero":
-            self.H = np.zeros(J)
-        elif topo == "ridge":
-            x = np.arange(0.0, self.L, self.dx)
-            self.H = np.empty(x.shape)
+        x = np.arange(0.0, self.L, self.dx)
+        self.H = np.empty(x.shape)
             
-            for (index, x_value) in enumerate(x):
-                self.H[index] = self._topography(x_value)
-        else:
-            raise ValueError("Choose a valid option.")
+        for (index, x_value) in enumerate(x):
+            self.H[index] = self._topography(x_value)
 
     def forecast(self, x, ndt=1):
         """Uses forward-time centered-space (FTCS) finite differences.
@@ -136,11 +125,11 @@ class swe(object):
         n0 = x[J : 2 * J]
         phi0 = x[2 * J : 3 * J]
         
-        (m, n, phi) = fortran.ftcs(m0, n0, phi0, self.H, self.f, \
+        (m, n, phi) = topog.ftcs_topog(m0, n0, phi0, self.H, self.f, \
                                    self.g, self.dx, self.dt, self.K)
 
         for i in xrange(1, ndt):
-            (m, n, phi) = fortran.ftcs(m, n, phi, self.H, self.f, \
+            (m, n, phi) = topog.ftcs_topog(m, n, phi, self.H, self.f, \
                                 self.g, self.dx, self.dt, self.K)
 
         return np.hstack((m, n, phi))
@@ -165,14 +154,14 @@ class swe(object):
         n0_d = xd[J : 2 * J]
         phi0_d = xd[2 * J : 3 * J]
 
-        (md, nd, phid) = fortran.ftcs_tlm(m0, m0_d, n0, n0_d, \
+        (md, nd, phid) = topog.ftcs_topog_tlm(m0, m0_d, n0, n0_d, \
             phi0, phi0_d, self.H, self.f, self.g, self.dx, \
             self.dt, self.K)
 
         for i in xrange(1, ndt):
-            (m0, n0, phi0) = fortran.ftcs(m0, n0, phi0, self.H, self.f, \
+            (m0, n0, phi0) = topog.ftcs_topog(m0, n0, phi0, self.H, self.f, \
                                    self.g, self.dx, self.dt, self.K)
-            (md, nd, phid) = fortran.ftcs_tlm(m0, md, n0, nd, \
+            (md, nd, phid) = topog.ftcs_topog_tlm(m0, md, n0, nd, \
                 phi0, phid, self.H, self.f, self.g, self.dx, \
                 self.dt, self.K)
 
@@ -207,7 +196,7 @@ class swe(object):
             n0 = xlist[i][J : 2 * J]
             phi0 = xlist[i][2 * J : 3 * J]
 
-            (m0b, n0b, phi0b) = fortran.ftcs_adj(m0, n0, phi0, m0b, \
+            (m0b, n0b, phi0b) = topog.ftcs_topog_adj(m0, n0, phi0, m0b, \
                 n0b, phi0b, self.H, self.f, self.g, self.dx, \
                 self.dt, self.K)
         
@@ -233,7 +222,7 @@ class swe(object):
         plt.pause(0.0001)
 
         for k in xrange(1, ndt + 1):
-            [m, n, phi] = fortran.ftcs(m, n, phi, self.H, self.f, \
+            [m, n, phi] = topog.ftcs_topog(m, n, phi, self.H, self.f, \
                                    self.g, self.dx, self.dt, self.K)
         
             plt.clf()

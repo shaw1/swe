@@ -1,4 +1,4 @@
-subroutine ftcs(m0, n0, phi0, m, n, phi, H, f, g, dx, dt, K, length)
+subroutine ftcs_topog(m0, n0, phi0, m, n, phi, H, f, g, dx, dt, K, length)
   ! The two-dimensional shallow water equations with bottom topography and
   ! rotation as derived in [2] are implemented with the additional assumption
   ! that the functions u, v, and phi are independent of y. These equations
@@ -95,4 +95,4 @@ subroutine ftcs(m0, n0, phi0, m, n, phi, H, f, g, dx, dt, K, length)
 
   phi(length) = phi0(length) - coeff2 * (m0(1) - m0(length - 1)) + &
        coeff3 * (phi0(length - 1) - 2.d0 * phi0(length) + phi0(1))
-end subroutine ftcs
+end subroutine ftcs_topog

@@ -6,7 +6,7 @@
 !   with respect to varying inputs: m n m0 phi0 n0 phi
 !   RW status of diff variables: m:in-out n:in-out m0:out phi0:out
 !                n0:out phi:in-out
-SUBROUTINE FTCS_ADJ(m0, m0b, n0, n0b, phi0, phi0b, mb, nb, phib&
+SUBROUTINE FTCS_TOPOG_ADJ(m0, m0b, n0, n0b, phi0, phi0b, mb, nb, phib&
 & , h, f, g, dx, dt, k, length)
   IMPLICIT NONE
   INTEGER, INTENT(IN) :: length
@@ -216,4 +216,4 @@ SUBROUTINE FTCS_ADJ(m0, m0b, n0, n0b, phi0, phi0b, mb, nb, phib&
   n0b = n0b + v0b/phi0
   phi0b = phi0b - m0*u0b/phi0**2 - n0*v0b/phi0**2
   m0b = m0b + u0b/phi0
-END SUBROUTINE FTCS_ADJ
+END SUBROUTINE FTCS_TOPOG_ADJ
