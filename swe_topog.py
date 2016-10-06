@@ -215,10 +215,11 @@ class swe_topog(object):
         
         plt.clf()
         plt.axis([0, self.J - 1, -10.0, 15.0])
-        plt.plot(xaxis, phi, ".-", label="$\phi$")
-        plt.plot(xaxis, n, ".-", label="$n$")
-        plt.plot(xaxis, m, ".-", label="$m$")
-        plt.legend(loc="upper left", numpoints=1)
+        plt.plot(xaxis, phi, "bo-", label="$\phi$")
+        plt.plot(xaxis, n, "g*-", label="$n$")
+        plt.plot(xaxis, m, "rs-", label="$m$")
+        plt.text(1, -9, "$k = 0$")
+        plt.legend(loc="lower right", numpoints=1)
         plt.pause(0.0001)
 
         for k in xrange(1, ndt + 1):
@@ -227,10 +228,11 @@ class swe_topog(object):
         
             plt.clf()
             plt.axis([0, self.J - 1, -10.0, 15.0])
-            plt.plot(xaxis, phi, ".-", label="$\phi$")
-            plt.plot(xaxis, n, ".-", label="$n$")
-            plt.plot(xaxis, m, ".-", label="$m$")
-            plt.legend(loc="upper left", numpoints=1)
+            plt.plot(xaxis, phi, "bo-", label="$\phi$")
+            plt.plot(xaxis, n, "g*-", label="$n$")
+            plt.plot(xaxis, m, "rs-", label="$m$")
+            plt.text(1, -9, "$k = " + str(k) + "$")
+            plt.legend(loc="lower right", numpoints=1)
             plt.pause(0.0001)
 
         plt.show()
@@ -260,3 +262,16 @@ class swe_topog(object):
             output = 0.0
         
         return output
+
+    # def _topography(self, x):
+    #     """A function describing the bottom topography.
+    
+    #     H(x) = sin^2(x / (2 * L)),
+
+    #     Argument:
+    #         x: Spatial location in the domain.
+
+    #     Returns:
+    #         Topography at location x.
+    #     """
+    #     return math.sin(x / (2.0 * self.L))
