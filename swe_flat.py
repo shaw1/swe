@@ -181,7 +181,7 @@ class swe_flat(object):
             n0 = xlist[i][J : 2 * J]
             phi0 = xlist[i][2 * J : 3 * J]
 
-            (m0b, n0b, phi0b) = flat.ftcs_flat_adj(m0, n0, phi0, m0b, \
+            (m0b, n0b, phi0b) = flat.ftcs_flat_adj(m0, n0, phi0, m0b,\
                 n0b, phi0b, self.f, self.dx, self.dt, self.K)
         
         return np.hstack((m0b, n0b, phi0b))

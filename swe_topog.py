@@ -129,7 +129,7 @@ class swe_topog(object):
                                    self.g, self.dx, self.dt, self.K)
 
         for i in xrange(1, ndt):
-            (m, n, phi) = topog.ftcs_topog(m, n, phi, self.H, self.f, \
+            (m, n, phi) = topog.ftcs_topog(m, n, phi, self.H, self.f,\
                                 self.g, self.dx, self.dt, self.K)
 
         return np.hstack((m, n, phi))
@@ -159,8 +159,8 @@ class swe_topog(object):
             self.dt, self.K)
 
         for i in xrange(1, ndt):
-            (m0, n0, phi0) = topog.ftcs_topog(m0, n0, phi0, self.H, self.f, \
-                                   self.g, self.dx, self.dt, self.K)
+            (m0, n0, phi0) = topog.ftcs_topog(m0, n0, phi0, self.H, \
+                            self.f, self.g, self.dx, self.dt, self.K)
             (md, nd, phid) = topog.ftcs_topog_tlm(m0, md, n0, nd, \
                 phi0, phid, self.H, self.f, self.g, self.dx, \
                 self.dt, self.K)
@@ -196,8 +196,8 @@ class swe_topog(object):
             n0 = xlist[i][J : 2 * J]
             phi0 = xlist[i][2 * J : 3 * J]
 
-            (m0b, n0b, phi0b) = topog.ftcs_topog_adj(m0, n0, phi0, m0b, \
-                n0b, phi0b, self.H, self.f, self.g, self.dx, \
+            (m0b, n0b, phi0b) = topog.ftcs_topog_adj(m0, n0, phi0, \
+                m0b, n0b, phi0b, self.H, self.f, self.g, self.dx, \
                 self.dt, self.K)
         
         return np.hstack((m0b, n0b, phi0b))
@@ -223,7 +223,7 @@ class swe_topog(object):
         plt.pause(0.0001)
 
         for k in xrange(1, ndt + 1):
-            [m, n, phi] = topog.ftcs_topog(m, n, phi, self.H, self.f, \
+            [m, n, phi] = topog.ftcs_topog(m, n, phi, self.H, self.f,\
                                    self.g, self.dx, self.dt, self.K)
         
             plt.clf()
